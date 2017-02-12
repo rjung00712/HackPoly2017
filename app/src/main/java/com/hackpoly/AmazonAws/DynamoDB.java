@@ -31,10 +31,17 @@ public class DynamoDB {
         mapper = new DynamoDBMapper(ddbClient);
     }
 
-    public void addUser(final FoodGameUser foodGameUser) {
+    public void addUser(final FoodGameUser foodGameUser, final LogInActivity logInActivity) {
         Runnable runnable = new Runnable() {
             public void run() {
-                mapper.save(foodGameUser);
+                FoodGameUser user = mapper.load(FoodGameUser.class, foodGameUser.getUsername());
+                if (user != null) {
+                    logInActivity.execute(null);
+                } else {
+                    foodGameUser.setActive(true);
+                    mapper.save(foodGameUser);
+                    logInActivity.execute(foodGameUser);
+                }
             }
         };
         new Thread(runnable).start();
