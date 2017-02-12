@@ -46,8 +46,14 @@ public class Filter {
         // GET /businesses/search
         OkHttpClient client2 = new OkHttpClient();
 
+
+        String term = "taco";                       // Search
+        String location = "Irivine, CA";
+        String price = "1";                         // 1 = $, 2 = $$, 3 = $$$, 4 = $$$$
+
+
         Request request2 = new Builder()
-                .url("https://api.yelp.com/v3/businesses/search?term=taco&location=92620&limit=1&sort_by=rating&price=1")
+                .url("https://api.yelp.com/v3/businesses/search?term=" + term + "&location=" + location + "&limit=1&sort_by=rating&price="+price+"")
                 .get()
                 .addHeader("authorization", "Bearer"+" "+accessToken)
                 .addHeader("cache-control", "no-cache")
@@ -68,7 +74,5 @@ public class Filter {
         }
 
     }
-
-
 
 }
