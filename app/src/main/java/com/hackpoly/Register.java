@@ -32,7 +32,7 @@ public class Register extends AppCompatActivity
 
         final EditText etFirstName = (EditText) findViewById(R.id.etFirstName);
         final EditText etLastName = (EditText) findViewById(R.id.etLastName);
-        final EditText etdateOfBirth = (EditText) findViewById(R.id.etdateOfBirth);
+        //final EditText etdateOfBirth = (EditText) findViewById(R.id.etdateOfBirth);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final EditText etVerifyPassword = (EditText) findViewById(R.id.etVerifyPassword);
@@ -49,7 +49,7 @@ public class Register extends AppCompatActivity
                 lastName = etLastName.getText().toString();
                 final String Username = etUsername.getText().toString();
                 email = etEmail.getText().toString();
-                final String dateOfBirth = etdateOfBirth.getText().toString();
+                //final String dateOfBirth = etdateOfBirth.getText().toString();
                 final String password = etPassword.getText().toString();
                 final String verifyPassword = etVerifyPassword.getText().toString();
                 valid = true;
@@ -72,12 +72,12 @@ public class Register extends AppCompatActivity
                     valid = false;
                     etUsername.requestFocus();
                 }
-                if (!isDateValid(dateOfBirth) || !notEmpty(dateOfBirth)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
-                    builder.setMessage("Not a valid Date of Birth (MM/DD/YYYY)").setNegativeButton("Retry", null).create().show();
-                    valid = false;
-                    etdateOfBirth.requestFocus();
-                }
+//                if (!isDateValid(dateOfBirth) || !notEmpty(dateOfBirth)) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+//                    builder.setMessage("Not a valid Date of Birth (MM/DD/YYYY)").setNegativeButton("Retry", null).create().show();
+//                    valid = false;
+//                    etdateOfBirth.requestFocus();
+//                }
                 if (!notEmpty(password)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
                     builder.setMessage("Not a valid password").setNegativeButton("Retry", null).create().show();
@@ -112,9 +112,9 @@ public class Register extends AppCompatActivity
 
                 if(password.equals(verifyPassword))
                 {
-//                    RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,email,dateOfBirth,Username,password, responseListener );
-//                    RequestQueue queue = Volley.newRequestQueue(Register.this);
-//                    queue.add(registerRequest);
+                    RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,email,Username,password, responseListener );
+                    RequestQueue queue = Volley.newRequestQueue(Register.this);
+                    queue.add(registerRequest);
                 }
                 else
                 {
