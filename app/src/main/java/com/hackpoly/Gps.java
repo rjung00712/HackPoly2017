@@ -15,6 +15,10 @@ public class Gps extends AppCompatActivity implements android.location.LocationL
     private double longitude, latitude;
     @Override
     public void onLocationChanged(Location location) {
+        System.out.println("Location change event triggered");
+        System.out.println("LON: " + location.getLongitude());
+        System.out.println("LAT: " + location.getLatitude());
+
         longitude = location.getLongitude();
         latitude = location.getLatitude();
     }
@@ -30,10 +34,10 @@ public class Gps extends AppCompatActivity implements android.location.LocationL
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(String provider)
+    {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(intent);
-
     }
 
     public double getLongitude()

@@ -39,4 +39,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:text="GPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bSetting"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118dp"
+        android:id="@+id/bGPS" />
+
 </RelativeLayout>

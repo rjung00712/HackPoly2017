@@ -21,7 +21,8 @@ public class Login extends AppCompatActivity
     private static SharedPreferences.Editor pe;
     private static String Username;
     private static String Password;
-    private boolean invalid;
+    private static boolean invalid = true;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -94,16 +95,14 @@ public class Login extends AppCompatActivity
                     final String password = etPassword.getText().toString();
 
                     DynamoDB db = new DynamoDB(Login.this);
-                    final AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
                     db.userLogOn(Username, password, new LogInActivity()
                     {
-
                         @Override
                         public void execute(FoodGameUser foodGameUser)
                         {
                             if(foodGameUser != null)
                             {
-                                invalid = false;
+                                //invalid = false;
                                 pe.putString("Username", Username);
                                 pe.putString("password", password);
                                 pe.commit();
@@ -118,18 +117,20 @@ public class Login extends AppCompatActivity
                             }
                             else
                             {
-
-//                                Alert.setMessage("Invalid Username or Password");
-//                                Alert.setPositiveButton("OK", null);
-////                                etPassword.setText("");
-//                                Alert.create().show();
-//                                invalid = true;
+                                //invalid = true;
+                                //error();
                             }
                         }
                     });
-//                    if(invalid)
-//                    {
-//
+                    //if(invalid)
+                   // {
+//                        AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
+//                        Alert.setMessage("Invalid Username or Password");
+//                        Alert.setPositiveButton("OK", null);
+//                        etPassword.setText("");
+//                        Alert.create().show();
+//                        invalid = true;
+                  //  }
                 }
             });
         }

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,7 @@
         <activity android:name=".ChangeEmail" />
         <activity android:name=".ChangePassword"></activity>
         <activity android:name=".ListFriends"></activity>
+        <activity android:name=".Gps"></activity>
     </application>
 
 </manifest>
