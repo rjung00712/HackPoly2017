@@ -74,17 +74,30 @@ public class DynamoDB {
         new Thread(runnable).start();
     }
 
-    public void getUser(final String userName, final String password, final LogInActivity logInActivity) {
+    public void userLogOn(final String userName, final String password, final LogInActivity logInActivity) {
         Runnable runnable = new Runnable() {
             public void run() {
                 FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
                 if (selectedUser == null || !selectedUser.isActive() || selectedUser.getPassword().equals(password)) {
                     selectedUser = null;
+                } else {
+                    selectedUser.setActive(true);
                 }
                 logInActivity.execute(selectedUser);
             }
         };
         new Thread(runnable).start();
+    }
+
+    public void userLogOff(final String userName) {
+        Runnable runnable = new Runnable() {
+            public void run() {
+            FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
+            if (selectedUser != null) {
+                selectedUser.setActive(false);
+            }
+            }
+        };
     }
 
     public void getFriends(final String userName, final PopulateActivities populateActivities) {

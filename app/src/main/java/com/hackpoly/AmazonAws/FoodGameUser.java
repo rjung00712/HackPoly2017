@@ -26,7 +26,7 @@ public class FoodGameUser {
 
     public FoodGameUser() {
         friendSet = new HashSet<>();
-        friendSet.add("");
+        friendSet.add("InvalidUser");
     }
 
     @DynamoDBAttribute(attributeName = "emailAddress")
