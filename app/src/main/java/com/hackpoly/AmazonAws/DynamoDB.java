@@ -6,6 +6,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.*;
+import com.hackpoly.DynamoDBActivities.LogInActivity;
 import com.hackpoly.DynamoDBActivities.PopulateActivities;
 
 import java.util.ArrayList;
@@ -73,11 +74,14 @@ public class DynamoDB {
         new Thread(runnable).start();
     }
 
-    public void getUser(final String userName) {
+    public void getUser(final String userName, final String password, final LogInActivity logInActivity) {
         Runnable runnable = new Runnable() {
             public void run() {
                 FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
-                System.out.println(selectedUser);
+                if (selectedUser == null || !selectedUser.isActive() || selectedUser.getPassword().equals(password)) {
+                    selectedUser = null;
+                }
+                logInActivity.execute(selectedUser);
             }
         };
         new Thread(runnable).start();
@@ -88,6 +92,12 @@ public class DynamoDB {
             public void run() {
                 FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
                 List<FoodGameUser> allActiveFriends = new ArrayList<>();
+                for (String user : selectedUser.getFriendSet()) {
+                    FoodGameUser currentUser = mapper.load(FoodGameUser.class, user);
+                    if (currentUser != null && currentUser.isActive()) {
+                        allActiveFriends.add(currentUser);
+                    }
+                }
                 populateActivities.execute(allActiveFriends);
             }
         };
