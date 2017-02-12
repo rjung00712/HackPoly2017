@@ -40,8 +40,8 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final TextView tvActivityUsername = (TextView) findViewById(R.id.tvUsername);
         final Button bSetting = (Button) findViewById(R.id.bSetting);
-        final Button bFilter = (Button) findViewById(R.id.bFilter);
-        final Button bPeople = (Button) findViewById(R.id.bAddPeopleToList);
+        //final Button bFilter = (Button) findViewById(R.id.bFilter);
+        //final Button bPeople = (Button) findViewById(R.id.bAddPeopleToList);
         final Button bPlay = (Button) findViewById(R.id.bPlay);
         final String GpsUrl = "http://app.comli.com/findFriends.php";
         final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -55,86 +55,87 @@ public class UserActivity extends AppCompatActivity {
         }
 
         //When "Setting" is selected; Setting.class
-        if (bSetting != null) {
-            bSetting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent settingIntent = new Intent(UserActivity.this, Setting.class);
-                    UserActivity.this.startActivity(settingIntent);
-                }
-            });
-        }
-
-        //When "Filter" is selected; Filter.class
-        if (bFilter != null) {
-            bFilter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //wait for sean
-                    //   Intent filterIntent = new Intent(UserActivity.this, Filter.class);
-                    //UserActivity.this.startActivity(filterIntent);
-                }
-            });
-        }
-
-        //When "People" is selected; Gps.class
-        if (bPeople != null) {
-            bPeople.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // System.out.println("adding Gps");
-                    // System.out.println("Long: " +  locationListener.getLongitude() + "\nLat: " +  locationListener.getLatitude());
-                    StringRequest request = new StringRequest(Request.Method.POST, GpsUrl, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            System.out.println(response);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> parameters = new HashMap<>();
-                            parameters.put("Longitude", String.valueOf(locationListener.getLongitude()));
-                            parameters.put("Latitude", String.valueOf(locationListener.getLatitude()));
-                            parameters.put("Active", "1");
-                            parameters.put("Username", username);
-
-                            return parameters;
-                        }
-                    };
-                    requestQueue.add(request);
-
-                    //waiting for friends class
-                    //Intent peopleIntent = new Intent(UserActivity.this, Friends.class);
-                    // UserActivity.this.startActivity(peopleIntent);
-                }
-            });
-
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.INTERNET}, 10);
-                    return;
-                }
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-        }
+//        if (bSetting != null) {
+//            bSetting.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent settingIntent = new Intent(UserActivity.this, Setting.class);
+//                    UserActivity.this.startActivity(settingIntent);
+//                }
+//            });
+//        }
+//
+//        //When "Filter" is selected; Filter.class
+//        if (bFilter != null) {
+//            bFilter.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    //wait for sean
+//                    //   Intent filterIntent = new Intent(UserActivity.this, Filter.class);
+//                    //UserActivity.this.startActivity(filterIntent);
+//                }
+//            });
+//        }
+//
+//        //When "People" is selected; Gps.class
+//        if (bPeople != null) {
+//            bPeople.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // System.out.println("adding Gps");
+//                    // System.out.println("Long: " +  locationListener.getLongitude() + "\nLat: " +  locationListener.getLatitude());
+//                    StringRequest request = new StringRequest(Request.Method.POST, GpsUrl, new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            System.out.println(response);
+//                        }
+//                    }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//
+//                        }
+//                    }) {
+//                        @Override
+//                        protected Map<String, String> getParams() throws AuthFailureError {
+//                            Map<String, String> parameters = new HashMap<>();
+//                            parameters.put("Longitude", String.valueOf(locationListener.getLongitude()));
+//                            parameters.put("Latitude", String.valueOf(locationListener.getLatitude()));
+//                            parameters.put("Active", "1");
+//                            parameters.put("Username", username);
+//
+//                            return parameters;
+//                        }
+//                    };
+//                    requestQueue.add(request);
+//
+//                    //waiting for friends class
+//                    //Intent peopleIntent = new Intent(UserActivity.this, Friends.class);
+//                    // UserActivity.this.startActivity(peopleIntent);
+//                }
+//            });
+//
+//            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    requestPermissions(new String[]{
+//                            Manifest.permission.ACCESS_FINE_LOCATION,
+//                            Manifest.permission.ACCESS_COARSE_LOCATION,
+//                            Manifest.permission.INTERNET}, 10);
+//                    return;
+//                }
+//            }
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+//
+//        }
 
         //When "Play" is selected; Setting.class
         if (bPlay != null) {
             bPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //                Intent playIntent = new Intent(UserActivity.this, YOUR_NAME_HERE.class);
-                    //                UserActivity.this.startActivity(playIntent);
+                    //RICHARD CODE
+//                        Intent playIntent = new Intent(UserActivity.this, Play.class);
+//                        UserActivity.this.startActivity(playIntent);
                 }
             });/**/
         }
