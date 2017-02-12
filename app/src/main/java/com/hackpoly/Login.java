@@ -29,7 +29,8 @@ public class Login extends AppCompatActivity
     private static SharedPreferences.Editor pe;
     private static String Username;
     private static String Password;
-    private boolean invalid;
+    private static boolean invalid = true;
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -100,54 +101,16 @@ public class Login extends AppCompatActivity
 
                     final String Username = etUsername.getText().toString();
                     final String password = etPassword.getText().toString();
-//                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                        @Override
-//                        //Validate Username + Password with database
-//                        public void onResponse(String response) {
-//                            try {
-//                                JSONObject jsonResponse = new JSONObject(response);
-//                                boolean success = jsonResponse.getBoolean("success");
-//                                if (success) {
-//                                    String username = jsonResponse.getString("Username");
-//                                    String password = jsonResponse.getString("password");
-//                                    pe.putString("Username", username);
-//                                    pe.putString("password", password);
-//                                    pe.commit();
-//
-//                                    //create an intent to store Username information for UserActivity
-//                                    Intent userIntent = new Intent(Login.this, UserActivity.class);
-//                                    userIntent.putExtra("Username", username);
-//                                    userIntent.putExtra("password", password);
-//
-//                                    //start activity to UserActivity.class
-//                                    Login.this.startActivity(userIntent);
-//                                } else {
-//                                    AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
-//                                    Alert.setMessage("Invalid Username or Password");
-//                                    Alert.setPositiveButton("OK", null);
-//                                    etPassword.setText("");
-//                                    Alert.create().show();
-//                                }
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    };
-//                    LoginRequest loginRequest = new LoginRequest(Username, password, responseListener);
-//                    RequestQueue queue = Volley.newRequestQueue(Login.this);
-//                    queue.add(loginRequest);
 
                     DynamoDB db = new DynamoDB(Login.this);
-                    final AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
                     db.userLogOn(Username, password, new LogInActivity()
                     {
-
                         @Override
                         public void execute(FoodGameUser foodGameUser)
                         {
                             if(foodGameUser != null)
                             {
-                                invalid = false;
+                                //invalid = false;
                                 pe.putString("Username", Username);
                                 pe.putString("password", password);
                                 pe.commit();
@@ -162,18 +125,20 @@ public class Login extends AppCompatActivity
                             }
                             else
                             {
-
-//                                Alert.setMessage("Invalid Username or Password");
-//                                Alert.setPositiveButton("OK", null);
-////                                etPassword.setText("");
-//                                Alert.create().show();
-//                                invalid = true;
+                                //invalid = true;
+                                //error();
                             }
                         }
                     });
-//                    if(invalid)
-//                    {
-//
+                    //if(invalid)
+                   // {
+//                        AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
+//                        Alert.setMessage("Invalid Username or Password");
+//                        Alert.setPositiveButton("OK", null);
+//                        etPassword.setText("");
+//                        Alert.create().show();
+//                        invalid = true;
+                  //  }
                 }
             });
         }
