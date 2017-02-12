@@ -55,15 +55,15 @@ public class UserActivity extends AppCompatActivity {
         }
 
         //When "Setting" is selected; Setting.class
-//        if (bSetting != null) {
-//            bSetting.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent settingIntent = new Intent(UserActivity.this, Setting.class);
-//                    UserActivity.this.startActivity(settingIntent);
-//                }
-//            });
-//        }
+        if (bSetting != null) {
+            bSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent settingIntent = new Intent(UserActivity.this, Setting.class);
+                    UserActivity.this.startActivity(settingIntent);
+                }
+            });
+        }
 //
 //        //When "Filter" is selected; Filter.class
 //        if (bFilter != null) {

@@ -1,5 +1,7 @@
 package com.hackpoly;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.hackpoly.AmazonAws.DynamoDB;
+import com.hackpoly.AmazonAws.FoodGameUser;
+import com.hackpoly.DynamoDBActivities.LogInActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +29,7 @@ public class Login extends AppCompatActivity
     private static SharedPreferences.Editor pe;
     private static String Username;
     private static String Password;
-
+    private boolean invalid;
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -92,44 +97,83 @@ public class Login extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
+
                     final String Username = etUsername.getText().toString();
                     final String password = etPassword.getText().toString();
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                        @Override
+//                        //Validate Username + Password with database
+//                        public void onResponse(String response) {
+//                            try {
+//                                JSONObject jsonResponse = new JSONObject(response);
+//                                boolean success = jsonResponse.getBoolean("success");
+//                                if (success) {
+//                                    String username = jsonResponse.getString("Username");
+//                                    String password = jsonResponse.getString("password");
+//                                    pe.putString("Username", username);
+//                                    pe.putString("password", password);
+//                                    pe.commit();
+//
+//                                    //create an intent to store Username information for UserActivity
+//                                    Intent userIntent = new Intent(Login.this, UserActivity.class);
+//                                    userIntent.putExtra("Username", username);
+//                                    userIntent.putExtra("password", password);
+//
+//                                    //start activity to UserActivity.class
+//                                    Login.this.startActivity(userIntent);
+//                                } else {
+//                                    AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
+//                                    Alert.setMessage("Invalid Username or Password");
+//                                    Alert.setPositiveButton("OK", null);
+//                                    etPassword.setText("");
+//                                    Alert.create().show();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    };
+//                    LoginRequest loginRequest = new LoginRequest(Username, password, responseListener);
+//                    RequestQueue queue = Volley.newRequestQueue(Login.this);
+//                    queue.add(loginRequest);
+
+                    DynamoDB db = new DynamoDB(Login.this);
+                    final AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
+                    db.userLogOn(Username, password, new LogInActivity()
+                    {
+
                         @Override
-                        //Validate Username + Password with database
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-                                if (success) {
-                                    String username = jsonResponse.getString("Username");
-                                    String password = jsonResponse.getString("password");
-                                    pe.putString("Username", username);
-                                    pe.putString("password", password);
-                                    pe.commit();
+                        public void execute(FoodGameUser foodGameUser)
+                        {
+                            if(foodGameUser != null)
+                            {
+                                invalid = false;
+                                pe.putString("Username", Username);
+                                pe.putString("password", password);
+                                pe.commit();
 
-                                    //create an intent to store Username information for UserActivity
-                                    Intent userIntent = new Intent(Login.this, UserActivity.class);
-                                    userIntent.putExtra("Username", username);
-                                    userIntent.putExtra("password", password);
+                                //create an intent to store Username information for UserActivity
+                                Intent userIntent = new Intent(Login.this, UserActivity.class);
+                                userIntent.putExtra("Username", Username);
+                                userIntent.putExtra("password", password);
 
-                                    //start activity to UserActivity.class
-                                    Login.this.startActivity(userIntent);
-                                } else {
-                                    AlertDialog.Builder Alert = new AlertDialog.Builder(Login.this);
-                                    Alert.setMessage("Invalid Username or Password");
-                                    Alert.setPositiveButton("OK", null);
-                                    etPassword.setText("");
-                                    Alert.create().show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                //start activity to UserActivity.class
+                                Login.this.startActivity(userIntent);
+                            }
+                            else
+                            {
+
+//                                Alert.setMessage("Invalid Username or Password");
+//                                Alert.setPositiveButton("OK", null);
+////                                etPassword.setText("");
+//                                Alert.create().show();
+//                                invalid = true;
                             }
                         }
-                    };
-                    LoginRequest loginRequest = new LoginRequest(Username, password, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(Login.this);
-                    queue.add(loginRequest);
+                    });
+//                    if(invalid)
+//                    {
+//
                 }
             });
         }
@@ -148,4 +192,5 @@ public class Login extends AppCompatActivity
         Password = x;
     }
     public static String getPassword() { return Password; }
+
 }
