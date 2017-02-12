@@ -127,9 +127,9 @@ public class Login extends AppCompatActivity
                             }
                         }
                     };
-//                    LoginRequest loginRequest = new LoginRequest(Username, password, responseListener);
-//                    RequestQueue queue = Volley.newRequestQueue(Login.this);
-                    //queue.add(loginRequest);
+                    LoginRequest loginRequest = new LoginRequest(Username, password, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(Login.this);
+                    queue.add(loginRequest);
                 }
             });
         }
