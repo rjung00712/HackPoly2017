@@ -27,7 +27,7 @@ public class FoodGameUser {
         friendSet = new HashSet<>();
     }
 
-    @DynamoDBIndexHashKey(attributeName = Constants.HASH_KEY)
+    @DynamoDBHashKey(attributeName = Constants.HASH_KEY)
     public String getUsername() {
         return username;
     }
@@ -95,11 +95,24 @@ public class FoodGameUser {
         return friendSet;
     }
 
+    public void setFriendSet(Set<String> friendSet) {
+        this.friendSet = friendSet;
+    }
+
     public void addFriend(String friendUserName) {
         friendSet.add(friendUserName);
     }
 
     public void removeFriend(String friendUserName) {
         friendSet.remove(friendUserName);
+    }
+
+    public String toString() {
+        return getUsername() + Constants.TAB +
+                getFirstName() + Constants.TAB +
+                getLastName() + Constants.TAB +
+                isActive() + Constants.TAB +
+                getFriendSet();
+
     }
 }

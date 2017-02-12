@@ -2,11 +2,15 @@ package com.hackpoly.AmazonAws;
 
 import android.content.Context;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.*;
+import com.hackpoly.DynamoDBActivities.PopulateActivities;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by waiphyo on 2/11/17.
  */
@@ -26,16 +30,13 @@ public class DynamoDB {
         mapper = new DynamoDBMapper(ddbClient);
     }
 
-
-
     public void addUser(final FoodGameUser foodGameUser) {
         Runnable runnable = new Runnable() {
             public void run() {
                 mapper.save(foodGameUser);
             }
         };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
+        new Thread(runnable).start();
     }
 
     public void updateLocation(final String userName, final double latitude, final double longitude) {
@@ -47,8 +48,7 @@ public class DynamoDB {
                 mapper.save(selectedUser);
             }
         };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
+        new Thread(runnable).start();
     }
 
     public void addFriend(final String userName, final String friendUserName) {
@@ -59,6 +59,7 @@ public class DynamoDB {
                 mapper.save(selectedUser);
             }
         };
+        new Thread(runnable).start();
     }
 
     public void removeFriend(final String userName, final String friendUserName) {
@@ -69,15 +70,27 @@ public class DynamoDB {
                 mapper.save(selectedUser);
             }
         };
+        new Thread(runnable).start();
     }
 
-    public FoodGameUser getUser(final String userName) {
-        try {
-            return mapper.load(FoodGameUser.class, userName);
-        } catch (AmazonServiceException ase) {
-            System.out.println(ase.toString());
-            return null;
-        }
+    public void getUser(final String userName) {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
+                System.out.println(selectedUser);
+            }
+        };
+        new Thread(runnable).start();
     }
 
+    public void getFriends(final String userName, final PopulateActivities populateActivities) {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
+                List<FoodGameUser> allActiveFriends = new ArrayList<>();
+                populateActivities.execute(allActiveFriends);
+            }
+        };
+        new Thread(runnable).start();
+    }
 }
