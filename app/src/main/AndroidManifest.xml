@@ -15,6 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Login" />
+        <activity android:name=".Register" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".UserActivity" />
+        <activity android:name=".Setting" />
+        <activity android:name=".ChangeName" />
+        <activity android:name=".ChangeEmail" />
+        <activity android:name=".ChangePassword"></activity>
     </application>
 
 </manifest>
