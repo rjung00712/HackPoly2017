@@ -25,6 +25,7 @@ public class FoodGameUser {
 
     public FoodGameUser() {
         friendSet = new HashSet<>();
+        friendSet.add("");
     }
 
     @DynamoDBHashKey(attributeName = Constants.HASH_KEY)
