@@ -85,7 +85,7 @@ public class DynamoDB {
         Runnable runnable = new Runnable() {
             public void run() {
                 FoodGameUser selectedUser = mapper.load(FoodGameUser.class, userName);
-                if (selectedUser == null || !selectedUser.isActive() || selectedUser.getPassword().equals(password)) {
+                if (selectedUser == null || !selectedUser.getPassword().equals(password)) {
                     selectedUser = null;
                 } else {
                     selectedUser.setActive(true);
