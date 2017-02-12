@@ -18,6 +18,7 @@ public class FoodGameUser {
     private String password;
     private String firstName;
     private String lastName;
+    private String emailAddress;
     private double latitude;
     private double longitude;
     private boolean active;
@@ -25,7 +26,16 @@ public class FoodGameUser {
 
     public FoodGameUser() {
         friendSet = new HashSet<>();
-        friendSet.add("");
+        friendSet.add("InvalidUser");
+    }
+
+    @DynamoDBAttribute(attributeName = "emailAddress")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     @DynamoDBHashKey(attributeName = Constants.HASH_KEY)
