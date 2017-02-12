@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class Constants {
 
-    public static final String IDENTITY_POOL_ID = "";
+    public static final String IDENTITY_POOL_ID = "us-west-2:1059b05e-bd61-4d7c-8c46-f8c14a364f76";
     // Note that spaces are not allowed in the table name
     public static final String TEST_TABLE_NAME = "FoodGameUser";
 
