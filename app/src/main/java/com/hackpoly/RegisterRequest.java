@@ -15,7 +15,7 @@ public class RegisterRequest extends StringRequest
     private static final String REGISTER_REQUEST_URL= "http://app.comli.com/Register.php";
     private Map<String, String> params;
 
-    public RegisterRequest (String FirstName, String LastName, String Email,String dateOfBirth,String Username,
+    public RegisterRequest (String FirstName, String LastName, String Email, String Username,
                             String password,Response.Listener<String> listener)
     {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
@@ -23,7 +23,7 @@ public class RegisterRequest extends StringRequest
         params.put("FirstName", FirstName);
         params.put("LastName", LastName);
         params.put("Email", Email);
-        params.put("dateOfBirth", dateOfBirth);
+        params.put("dateOfBirth", "02/11/2017");
         params.put("Username", Username);
         params.put("password", password);
     }

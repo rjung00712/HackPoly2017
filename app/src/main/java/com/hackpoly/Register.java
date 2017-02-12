@@ -11,6 +11,9 @@ import android.widget.EditText;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.hackpoly.AmazonAws.DynamoDB;
+import com.hackpoly.AmazonAws.FoodGameUser;
+import com.hackpoly.DynamoDBActivities.LogInActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,12 +35,13 @@ public class Register extends AppCompatActivity
 
         final EditText etFirstName = (EditText) findViewById(R.id.etFirstName);
         final EditText etLastName = (EditText) findViewById(R.id.etLastName);
-        final EditText etdateOfBirth = (EditText) findViewById(R.id.etdateOfBirth);
+        //final EditText etdateOfBirth = (EditText) findViewById(R.id.etdateOfBirth);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final EditText etVerifyPassword = (EditText) findViewById(R.id.etVerifyPassword);
         final EditText etEmail = (EditText) findViewById(R.id.etEmail);
         final Button bRegister = (Button) findViewById(R.id.bRegister);
+
 
         assert bRegister != null;
         bRegister.setOnClickListener(new View.OnClickListener()
@@ -49,7 +53,7 @@ public class Register extends AppCompatActivity
                 lastName = etLastName.getText().toString();
                 final String Username = etUsername.getText().toString();
                 email = etEmail.getText().toString();
-                final String dateOfBirth = etdateOfBirth.getText().toString();
+                //final String dateOfBirth = etdateOfBirth.getText().toString();
                 final String password = etPassword.getText().toString();
                 final String verifyPassword = etVerifyPassword.getText().toString();
                 valid = true;
@@ -72,12 +76,12 @@ public class Register extends AppCompatActivity
                     valid = false;
                     etUsername.requestFocus();
                 }
-                if (!isDateValid(dateOfBirth) || !notEmpty(dateOfBirth)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
-                    builder.setMessage("Not a valid Date of Birth (MM/DD/YYYY)").setNegativeButton("Retry", null).create().show();
-                    valid = false;
-                    etdateOfBirth.requestFocus();
-                }
+//                if (!isDateValid(dateOfBirth) || !notEmpty(dateOfBirth)) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+//                    builder.setMessage("Not a valid Date of Birth (MM/DD/YYYY)").setNegativeButton("Retry", null).create().show();
+//                    valid = false;
+//                    etdateOfBirth.requestFocus();
+//                }
                 if (!notEmpty(password)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
                     builder.setMessage("Not a valid password").setNegativeButton("Retry", null).create().show();
@@ -85,34 +89,60 @@ public class Register extends AppCompatActivity
                     etPassword.requestFocus();
                 }
 
-                Response.Listener<String> responseListener = new Response.Listener<String>()
-                {
-
-                    @Override
-                    public void onResponse(String response) {
-                        if (valid == true) {
-                            try {
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-
-                                if (success) {
-                                    Intent intent = new Intent(Register.this, Login.class);
-                                    Register.this.startActivity(intent);
-                                } else {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
-                                    builder.setMessage("Username taken").setNegativeButton("Retry", null).create().show();
-                                    etUsername.requestFocus();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                };
+//                Response.Listener<String> responseListener = new Response.Listener<String>()
+//                {
+//
+//                    @Override
+//                    public void onResponse(String response) {
+//                        if (valid == true) {
+//                            try {
+//                                JSONObject jsonResponse = new JSONObject(response);
+//                                boolean success = jsonResponse.getBoolean("success");
+//
+//                                if (success) {
+//                                    Intent intent = new Intent(Register.this, Login.class);
+//                                    Register.this.startActivity(intent);
+//                                } else {
+//                                    AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+//                                    builder.setMessage("Username taken").setNegativeButton("Retry", null).create().show();
+//                                    etUsername.requestFocus();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//                };
 
                 if(password.equals(verifyPassword))
                 {
-//                    RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,email,dateOfBirth,Username,password, responseListener );
+                    FoodGameUser newUser = new FoodGameUser();
+                    newUser.setFirstName(firstName);
+                    newUser.setLastName(lastName);
+                    newUser.setPassword(password);
+                    newUser.setUsername(Username);
+                    newUser.setEmailAddress(email);
+                    DynamoDB db = new DynamoDB(Register.this);
+                    db.addUser(newUser, new LogInActivity() {
+                        @Override
+                        public void execute(FoodGameUser foodGameUser) {
+                            if(foodGameUser != null)
+                            {
+                                Intent intent = new Intent(Register.this, Login.class);
+                                Register.this.startActivity(intent);
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    });
+
+                    //need to check
+
+                    //newUser.set
+
+//                    RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,email,Username,password, responseListener );
 //                    RequestQueue queue = Volley.newRequestQueue(Register.this);
 //                    queue.add(registerRequest);
                 }
