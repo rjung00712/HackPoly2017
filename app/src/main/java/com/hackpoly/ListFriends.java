@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Richard on 2/11/17.
+ * Created by Richard on 2/12/17.
  */
 
 public class ListFriends extends AppCompatActivity {
